@@ -1,0 +1,3 @@
+projects:
+  - project: Clp
+    version: stable/1.17.6
