@@ -1,41 +1,45 @@
-#include <coin/ClpSimplex.hpp>  // Include COIN-OR header for Clp solver
-
-// Objective function
-double f(double x) {
-    // Define your objective function here
-    return -x * x;  // Example: maximizing a quadratic function
-}
+#include <iostream>
+#include <coin/CbcModel.hpp>
 
 int main() {
-    // Create Clp solver instance
-    ClpSimplex solver;
+    // Criar uma instância do modelo Cbc
+    CbcModel model;
 
-    // Set optimization direction to maximize
-    solver.setOptimizationDirection(1);
+    // Definir o sentido da otimização (maximizar ou minimizar)
+    model.setOptimizationDirection(1);  // 1 para maximizar, -1 para minimizar
 
-    // Define variable x
-    double xLowerBound = 0.0;
-    double xUpperBound = 1.0;
-    double xInitialGuess = 0.5;
+    // Definir o número de variáveis de decisão
+    int numVars = 2;
 
-    // Add variable x to the solver
-    int xIndex = solver.addCol();
-    solver.setColBounds(xIndex, xLowerBound, xUpperBound);
-    solver.setColSolution(xIndex, xInitialGuess);
+    // Adicionar as variáveis de decisão ao modelo
+    for (int i = 0; i < numVars; i++) {
+        model.addCol();
+    }
 
-    // Set objective function
-    solver.setObjectiveCoefficient(xIndex, 1.0);
+    // Definir os limites das variáveis de decisão
+    double lowerBound = 0.0;
+    double upperBound = 1.0;
+    for (int i = 0; i < numVars; i++) {
+        model.setColBounds(i, lowerBound, upperBound);
+    }
 
-    // Solve the optimization problem
-    solver.initialSolve();
+    // Definir os coeficientes da função objetivo
+    double objCoeffs[] = {1.0, 2.0};  // Coeficientes para as duas variáveis de decisão
+    model.setObjectiveCoefficients(numVars, objCoeffs);
 
-    // Get optimal solution and objective function value
-    double optimalX = solver.getColSolution()[xIndex];
-    double optimalValue = solver.getObjValue();
+    // Resolver o problema de otimização
+    model.branchAndBound();
 
-    // Print the results
-    std::cout << "Optimal Solution: x = " << optimalX << std::endl;
-    std::cout << "Optimal Value: " << optimalValue << std::endl;
+    // Obter a solução ótima
+    double* solution = model.getColSolution();
+
+    // Imprimir a solução
+    for (int i = 0; i < numVars; i++) {
+        std::cout << "Variável " << i << ": " << solution[i] << std::endl;
+    }
+
+    // Liberar memória
+    delete[] solution;
 
     return 0;
 }
