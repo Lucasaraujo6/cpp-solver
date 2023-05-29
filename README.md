@@ -25,13 +25,19 @@ To get help with additional options available in running the script, do
 ./coinbrew --help
 After installation, you will also need to add /path/to/install/dir/bin to your PATH variable in your .bashrc and also add /path/to/install/dir/lib to your LD_LIBRARY_PATH if you want to link to COIN libraries.
 
-TERMINAL: nano ~/.bashrc
+TERMINAL: 
+>nano ~/.bashrc
+
 EDITAR FILE: na última linha adicionar:
-                export PATH="/home/prod/coinbrew:$PATH"
-            salvar e fechar
-                ctrl+x s Enter
-TERMINAL: source ~/.bashrc
-TERMINAL: echo coinbrew
+>export PATH="/home/prod/coinbrew:$PATH"
+
+    salvar e fechar
+        ctrl + s + x Enter
+TERMINAL: 
+
+> source ~/.bashrc
+
+> echo coinbrew
 
 
 
